@@ -90,6 +90,39 @@ ORDER BY MONTH(issue_date);
 ```
 ---
 
+## 🧮 Key DAX Measures & Logic
+
+To drive dynamic visuals and time-intelligence KPIs, custom DAX measures were implemented in Power BI:
+
+```dax
+// Total Loan Applications
+Total Applications = COUNT(bank_loan_data[id])
+
+// Month-to-Date (MTD) Funded Capital
+MTD Funded Amount = 
+CALCULATE(
+    SUM(bank_loan_data[loan_amount]),
+    DATESMTD('Calendar'[Date])
+)
+
+// Good Loan Percentage
+Good Loan % = 
+DIVIDE(
+    CALCULATE(COUNT(bank_loan_data[id]), bank_loan_data[loan_status] IN {"Fully Paid", "Current"}),
+    [Total Applications],
+    0
+)
+
+// Bad Loan Percentage
+Bad Loan % = 
+DIVIDE(
+    CALCULATE(COUNT(bank_loan_data[id]), bank_loan_data[loan_status] = "Charged Off"),
+    [Total Applications],
+    0
+)
+```
+---
+
 ## 📐 Data Architecture & Modeling
 
 The Power BI data model follows a clean **Star Schema** design to optimize performance, simplify DAX measures, and ensure fast report rendering across 38,000+ records.
