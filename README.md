@@ -33,7 +33,20 @@ A robust analytical pipeline was built using SQL for data extraction, aggregatio
 ---
 
 ## 📊 Dashboard Preview
+## 📊 Dashboard Preview
 
+![Bank Loan Performance Summary](Bank_loan_project_summary.png)
+*Figure 1: High-Level Portfolio Performance & Summary View.*
+
+<br>
+
+![Bank Loan Dashboard Overview](Bank_laon_project_Overview.png)
+*Figure 2: Monthly Trends & Key Metric Overview.*
+
+<br>
+
+![Bank Loan Granular Details](Bank_loan_project_Details.png)
+*Figure 3: Granular Borrower & Loan Details Breakdown.*
 
 ---
 
