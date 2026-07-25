@@ -62,9 +62,7 @@ SELECT COUNT(id) AS PMTD_Applications FROM bank_loan_data WHERE MONTH(issue_date
 
 -- Portfolio Funding & Amount Received
 SELECT SUM(loan_amount) AS Total_Funded_Amount FROM bank_loan_data;
-SELECT SUM(total_payment) AS Total_Amount_Collected FROM bank_loan_data;
-
--- Good Loan Metrics (Fully Paid & Current)
+SELECT SUM(total_payment) AS Total_Amount_Collected FROM bank_loan_data;-- Good Loan Metrics (Fully Paid & Current)
 SELECT
     (COUNT(CASE WHEN loan_status IN ('Fully Paid', 'Current') THEN id END) * 100.0) / COUNT(id) AS Good_Loan_Pct,
     COUNT(id) AS Good_Loan_Applications,
@@ -79,7 +77,6 @@ SELECT
     SUM(loan_amount) AS Bad_Loan_Funded_Amount,
     SUM(total_payment) AS Bad_Loan_Amount_Received
 FROM bank_loan_data;
-
 -- Loan Performance Breakdown by Month
 SELECT 
     MONTH(issue_date) AS Month_Number, 
@@ -90,5 +87,32 @@ SELECT
 FROM bank_loan_data
 GROUP BY MONTH(issue_date), DATENAME(MONTH, issue_date)
 ORDER BY MONTH(issue_date);
+```
+---
 
+## 📐 Data Architecture & Modeling
 
+The Power BI data model follows a clean **Star Schema** design to optimize performance, simplify DAX measures, and ensure fast report rendering across 38,000+ records.
+
+![Star Schema Data Model](Bank_loan_project_Star_schema.png)
+*Figure 4: Power BI Star Schema Model View showing relationships between data and dimension tables.*
+
+---
+
+## 💡 Key Business Recommendations
+
+Based on the aggregated lending data and risk analysis, here are key strategic takeaways for credit risk and portfolio management:
+
+1. **Tighten DTI Thresholds for High-Risk Tiers:** Bad loans account for **13.82%** of overall applications. Implementing stricter Debt-to-Income (DTI) evaluation rules for Grades D–G can significantly reduce default rates.
+2. **Optimize Regional Capital Allocation:** Focus marketing and funding initiatives in top-performing geographical markets (states) where Good Loan repayment rates consistently exceed **90%**.
+3. **Monitor Short-Term vs. Long-Term Loan Performance:** 36-month loan terms show a higher recovery rate compared to 60-month terms; adjusting interest rate pricing on 60-month terms can help hedge against long-term default exposure.
+
+---
+
+## 👨‍💼 About Me
+
+I am a **Senior Data Analyst** with 4+ years of experience analyzing large-scale datasets (100M+ records) across sales, marketing, and financial markets. My expertise spans **SQL, Power BI, Databricks, Python, and cloud environments (AWS/Azure)** to build scalable ETL pipelines, design high-performing data models, and deliver business-critical analytics.
+
+Previously, I’ve optimized reporting infrastructure, redesigned data architectures to cut dashboard load times by 45%, and developed backtested strategies that generated $650K+ in ARR. I specialize in turning complex, multi-million-record datasets into actionable risk management insights, dynamic dashboards, and clear strategic roadmaps.
+
+📫 **Connect with me:** [LinkedIn](https://linkedin.com/in/abdul-wahab-jhare) | **Email:** jhareabdul@gmail.com
