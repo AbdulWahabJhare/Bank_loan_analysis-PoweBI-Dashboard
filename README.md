@@ -1,6 +1,6 @@
 # Bank Loan Performance & Risk Analysis Dashboard
 
-> **Transforming raw financial lending data into actionable risk management insights through optimized SQL queries and interactive Power BI visualizations.**
+> **Transforming raw financial lending data into actionable risk management insights through SQL analysis and interactive Power BI visualizations.**
 
 ---
 
@@ -33,7 +33,6 @@ A robust analytical pipeline was built using SQL for data extraction, aggregatio
 ---
 
 ## 📊 Dashboard Preview
-## 📊 Dashboard Preview
 
 ![Bank Loan Performance Summary](Bank_loan_project_summary.png)
 *Figure 1: High-Level Portfolio Performance & Summary View.*
@@ -50,9 +49,46 @@ A robust analytical pipeline was built using SQL for data extraction, aggregatio
 
 ---
 
-## 👨‍💼 About Me
-I am a **Senior Data Analyst** with 4+ years of experience analyzing large-scale datasets (100M+ records) across sales, marketing, and financial markets. My expertise spans **SQL, Power BI, Databricks, Python, and cloud environments (AWS/Azure)** to build scalable ETL pipelines, design high-performing data models, and deliver business-critical analytics.
+## 🛢️ SQL Queries & Business Logic
 
-Previously, I’ve optimized reporting infrastructure, redesigned data architectures to cut dashboard load times by 45%, and developed backtested strategies that generated $650K+ in ARR. I specialize in turning complex, multi-million-record datasets into actionable risk management insights, dynamic dashboards, and clear strategic roadmaps.
+The core metrics and calculations displayed in the dashboard were structured and validated using SQL Server (T-SQL) queries.
 
-📫 **Connect with me:** [LinkedIn](https://linkedin.com/in/abdul-wahab-jhare) | **Email:** jhareabdul@gmail.com
+### 1. Key Performance Indicators (KPIs)
+```sql
+-- Total Applications, MTD, and PMTD
+SELECT COUNT(id) AS Total_Applications FROM bank_loan_data;
+SELECT COUNT(id) AS MTD_Applications FROM bank_loan_data WHERE MONTH(issue_date) = 12;
+SELECT COUNT(id) AS PMTD_Applications FROM bank_loan_data WHERE MONTH(issue_date) = 11;
+
+-- Portfolio Funding & Amount Received
+SELECT SUM(loan_amount) AS Total_Funded_Amount FROM bank_loan_data;
+SELECT SUM(total_payment) AS Total_Amount_Collected FROM bank_loan_data;
+
+-- Good Loan Metrics (Fully Paid & Current)
+SELECT
+    (COUNT(CASE WHEN loan_status IN ('Fully Paid', 'Current') THEN id END) * 100.0) / COUNT(id) AS Good_Loan_Pct,
+    COUNT(id) AS Good_Loan_Applications,
+    SUM(loan_amount) AS Good_Loan_Funded_Amount,
+    SUM(total_payment) AS Good_Loan_Amount_Received
+FROM bank_loan_data;
+
+-- Bad Loan Metrics (Charged Off)
+SELECT
+    (COUNT(CASE WHEN loan_status = 'Charged Off' THEN id END) * 100.0) / COUNT(id) AS Bad_Loan_Pct,
+    COUNT(id) AS Bad_Loan_Applications,
+    SUM(loan_amount) AS Bad_Loan_Funded_Amount,
+    SUM(total_payment) AS Bad_Loan_Amount_Received
+FROM bank_loan_data;
+
+-- Loan Performance Breakdown by Month
+SELECT 
+    MONTH(issue_date) AS Month_Number, 
+    DATENAME(MONTH, issue_date) AS Month_Name, 
+    COUNT(id) AS Total_Applications,
+    SUM(loan_amount) AS Total_Funded_Amount,
+    SUM(total_payment) AS Total_Amount_Received
+FROM bank_loan_data
+GROUP BY MONTH(issue_date), DATENAME(MONTH, issue_date)
+ORDER BY MONTH(issue_date);
+
+
